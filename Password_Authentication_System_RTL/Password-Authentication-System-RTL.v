@@ -100,3 +100,85 @@ initial begin
                  $monitor("At time %t, auth_passed = %b", $time, auth_passed);
              end
  endmodule
+//testbench
+module testbench( );
+    reg clk;
+    reg reset;
+    reg [7:0] temperature;
+    wire heater_on;
+    wire AC_on;
+    wire cooler_on;
+
+    
+    temperature_controller uut (
+        .clk(clk), 
+        .reset(reset), 
+        .temperature(temperature), 
+        .heater_on(heater_on), 
+        .AC_on(AC_on), 
+        .cooler_on(cooler_on)
+    );
+
+    
+    always begin
+        #5 clk = ~clk; 
+    end
+
+   
+    initial begin
+       
+        clk = 0;
+        reset = 0;
+        temperature = 8'd0;
+
+        
+        $display("Applying reset...");
+        reset = 1; #10;
+        reset = 0; #10;
+
+        
+        $display("Test case 1: Temperature = 15°C (Heater on)");
+        temperature = 8'd15;
+        #20;
+        $display("heater_on = %b, AC_on = %b, cooler_on = %b", heater_on, AC_on, cooler_on);
+
+        
+        $display("Test case 2: Temperature = 25°C (No device on)");
+        temperature = 8'd25;
+        #20;
+        $display("heater_on = %b, AC_on = %b, cooler_on = %b", heater_on, AC_on, cooler_on);
+
+     
+        $display("Test case 3: Temperature = 35°C (Cooler on)");
+        temperature = 8'd35;
+        #20;
+        $display("heater_on = %b, AC_on = %b, cooler_on = %b", heater_on, AC_on, cooler_on);
+
+        
+        $display("Test case 4: Temperature = 50°C (AC on)");
+        temperature = 8'd50;
+        #20;
+        $display("heater_on = %b, AC_on = %b, cooler_on = %b", heater_on, AC_on, cooler_on);
+
+       
+        $display("Test case 5: Temperature = 20°C (No device on)");
+        temperature = 8'd20;
+        #20;
+        $display("heater_on = %b, AC_on = %b, cooler_on = %b", heater_on, AC_on, cooler_on);
+
+       
+        $display("Test case 6: Temperature = 30°C (No device on)");
+        temperature = 8'd30;
+        #20;
+        $display("heater_on = %b, AC_on = %b, cooler_on = %b", heater_on, AC_on, cooler_on);
+
+       
+        $display("Test case 7: Temperature = 45°C (No device on)");
+        temperature = 8'd45;
+        #20;
+        $display("heater_on = %b, AC_on = %b, cooler_on = %b", heater_on, AC_on, cooler_on);
+
+        
+        $finish;
+    end
+endmodule
